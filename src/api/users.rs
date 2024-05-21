@@ -7,7 +7,7 @@ use serde_json::json;
 
 use crate::api::{does_user_exist, emit_event};
 use crate::ApiState;
-use crate::events::{UserCreatedEvent, UserCreationEvent, UserRegisteredEvent};
+use crate::events::{UserCreatedEvent, UserRegisteredEvent};
 use crate::models::User;
 
 pub async fn create_user_account(
