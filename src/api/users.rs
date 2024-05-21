@@ -7,13 +7,12 @@ use serde_json::json;
 
 use crate::api::{does_user_exist, emit_event};
 use crate::ApiState;
-use crate::commands::CreateUserCommand;
-use crate::events::UserCreationEvent;
+use crate::events::{UserCreatedEvent, UserCreationEvent, UserRegisteredEvent};
 use crate::models::User;
 
-pub async fn create_user(
+pub async fn create_user_account(
     State(state): State<ApiState>,
-    Json(params): Json<CreateUserCommand>,
+    Json(params): Json<UserRegisteredEvent>,
 ) -> impl IntoResponse {
     debug!("Request received: {:#?}", params);
     let user_id = params.user_id.clone();
@@ -65,9 +64,9 @@ pub async fn create_user(
 
     emit_event(
         &state.pubsub_client,
-        "UserCreationEvent",
-        &serde_json::to_string(&UserCreationEvent {
-            user_id: user_id.clone(),
+        "UserCreatedEvent",
+        &serde_json::to_string(&UserCreatedEvent {
+            user: Some(returned.clone()),
         })
             .unwrap(),
     )

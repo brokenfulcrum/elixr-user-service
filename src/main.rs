@@ -93,7 +93,7 @@ async fn main() {
 
     // Construct the router for the API with the necessary routes
     let app = Router::new()
-        .route("/commands/user", routing::post(users::create_user))
+        .route("/events/user_registered", routing::post(users::create_user_account))
         .layer(middleware::from_fn(print_request_response))
         .with_state(api_state);
 
