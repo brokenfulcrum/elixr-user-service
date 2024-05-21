@@ -1,0 +1,52 @@
+syntax = "proto3";
+package models;
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+// ===== Enums =====
+enum TaskType {
+    OCR = 0;
+}
+enum TaskStatus {
+    Initialized = 0;
+    Queued = 1;
+    Processing = 2;
+    Completed = 3;
+    Failed = 4;
+}
+
+// ===== Messages =====
+message TaskData {
+
+    message OcrTaskParams {
+        string model_type = 1;
+        string feature_type = 2;
+    }
+
+    TaskType task_type = 1;
+    OcrTaskParams ocr_params = 2;
+}
+
+
+message Task {
+    string task_id = 1;
+    TaskData data = 2;
+    string object_path = 4;
+    TaskStatus status = 5;
+    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp updated_at = 7;
+    google.protobuf.Timestamp last_publish_time = 8;
+    uint64 duration_seconds = 9;
+    google.protobuf.Value result = 10;
+    string created_by = 11;
+}
+
+message User {
+    string user_id = 1;
+    string username = 2;
+    string email = 3;
+    string password = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
+
