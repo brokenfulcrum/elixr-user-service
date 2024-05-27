@@ -14,13 +14,14 @@ pub async fn create_user_account(
     State(state): State<ApiState>,
     Json(params): Json<UserRegisteredEvent>,
 ) -> impl IntoResponse {
-    debug!("Request received: {:#?}", params);
+    info!("Request received: {:#?}", params);
     let user_id = params.user_id.clone();
 
     // Make sure the user does not exist
     if does_user_exist(&state.firestore_client, &user_id).await? {
-        return Err((
-            StatusCode::FOUND,
+        // We'd probably want to shoot off a UserAlreadyExistsEvent here
+        return Ok((
+            StatusCode::OK,
             Json(json!({"status": "User already exists"})),
         ));
     };
